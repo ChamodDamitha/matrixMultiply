@@ -16,7 +16,7 @@ double **initMatrix(int n) {
 void populateMatrix(int n, double **mat) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
-            mat[i][j] = (rand() % 100) + 1;
+            mat[i][j] = (rand() % 1000) / 10.0;
         }
     }
 }
