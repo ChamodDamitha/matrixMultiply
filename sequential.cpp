@@ -22,6 +22,10 @@ double sequentialMultiplyMatrix(int n, double **mat1, double **mat2) {
 
     GET_TIME(endTime);
 
+    delete  mat1;     //Free the memory allocated for mat1
+    delete  mat2;     //Free the memory allocated for mat2
+    delete resMat;    //Free the memory allocated for resMat
+
     return (endTime - startTime);
 }
 

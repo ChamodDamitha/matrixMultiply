@@ -3,6 +3,7 @@
 #include <omp.h>
 #include "timer.h"
 
+//get transpose of matrix
 double **transposeMatrix(int n, double **mat) {
     double **transMat = initMatrix(n);
     for (int i = 0; i < n; ++i) {
@@ -19,12 +20,13 @@ double parallelOptimizedMultiplyMatrix(int n, double **mat1, double **mat2) {
     double startTime, endTime;
     double **resMat = initMatrix(n);
 
+//  randomly populate matrices
     populateMatrix(n, mat1);
     populateMatrix(n, mat2);
 
     double **transMat2 = transposeMatrix(n, mat2);
 
-//    flatten matrices
+//  flatten matrices
     double *flat1, *flat2;
     flat1 = (double *)malloc(sizeof(double) * n * n);
     flat2 = (double *)malloc(sizeof(double) * n * n);
@@ -39,13 +41,14 @@ double parallelOptimizedMultiplyMatrix(int n, double **mat1, double **mat2) {
 
 
     GET_TIME(startTime);
-
+//  run omp parallel loop
 #pragma omp parallel for
     for (int i = 0; i < n; i++) {
         int dimI = i * n;
         for (int j = 0; j < n; ++j) {
             double tempSum;
             int dimJ = j * n;
+//          skip loop by steps of 5
             for (int k = 0; k < n; k += 5) {
                 tempSum += flat1[dimI + k] * flat2[dimJ + k];
                 tempSum += flat1[dimI + k + 1] * flat2[dimJ + k + 1];
@@ -57,22 +60,11 @@ double parallelOptimizedMultiplyMatrix(int n, double **mat1, double **mat2) {
         }
     }
 
-//    for (int i = 0; i < n; ++i) {
-//        for (int j = 0; j < n; ++j) {
-//            double tempSum = 0;
-//            for (int k = 0; k < n; k++) {
-//                tempSum += mat1[i][k] * transMat2[j][k];
-//
-//            }
-//            resMat[i][j] = tempSum;
-//        }
-//    }
-
     GET_TIME(endTime);
 
-    delete mat1;     //Free the memory allocated for matA
-    delete mat2;     //Free the memory allocated for matB
-    delete resMat;    //Free the memory allocated for resMat
+    delete mat1;     //Free the memory allocated for mat1
+    delete mat2;     //Free the memory allocated for mat2
+    delete resMat;   //Free the memory allocated for resMat
 
     return (endTime - startTime);
 }

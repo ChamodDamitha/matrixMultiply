@@ -4,6 +4,7 @@
 using namespace std;
 
 
+// initialize a 2D matrix
 double **initMatrix(int n) {
     double **mat = new double *[n];
     for (int i = 0; i < n; i++) {
@@ -12,7 +13,7 @@ double **initMatrix(int n) {
     return mat;
 }
 
-
+// populate a 2D matrix by random double values
 void populateMatrix(int n, double **mat) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
@@ -21,7 +22,7 @@ void populateMatrix(int n, double **mat) {
     }
 }
 
-
+// calculate mean and standard deviation of time values
 void calculateStatistics(double sum, double squareSum, int count) {
     double mean = sum / count;
     double stdev = sqrt((squareSum / count) - (mean * mean));
