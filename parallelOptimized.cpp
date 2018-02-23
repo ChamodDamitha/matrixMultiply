@@ -44,10 +44,14 @@ double parallelOptimizedMultiplyMatrix(int n, double **mat1, double **mat2) {
     for (int i = 0; i < n; i++) {
         int dimI = i * n;
         for (int j = 0; j < n; ++j) {
-            double tempSum = 0;
+            double tempSum;
             int dimJ = j * n;
-            for (int k = 0; k < n; ++k) {
+            for (int k = 0; k < n; k += 5) {
                 tempSum += flat1[dimI + k] * flat2[dimJ + k];
+                tempSum += flat1[dimI + k + 1] * flat2[dimJ + k + 1];
+                tempSum += flat1[dimI + k + 2] * flat2[dimJ + k + 2];
+                tempSum += flat1[dimI + k + 3] * flat2[dimJ + k + 3];
+                tempSum += flat1[dimI + k + 4] * flat2[dimJ + k + 4];
             }
             resMat[i][j] = tempSum;
         }
